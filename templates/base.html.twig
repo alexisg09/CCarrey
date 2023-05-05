@@ -14,9 +14,18 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %} Bienvenue {{ user.username }}
-        <a href="/logout">LOGOUT</a>
-        
+        {% block body %} 
+        {% if user %}
+        <h1>Bienvenue {{ user.username }}</h1>
+
+        <h2>Email : {{ user.email }}</h2>
+        {% for role in user.roles %} 
+                   <li>{{ role }}</li>
+        {% endfor %}
+        {% endif %}
+
+
+       <button><a href="/logout">LOGOUT</a></button>
         {% endblock %}
     </body>
 </html>

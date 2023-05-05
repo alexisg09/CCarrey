@@ -11,7 +11,7 @@ security:
     app_user_provider:
       entity:
         class: App\Entity\User
-        property: id
+        property: username
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -21,7 +21,8 @@ security:
       provider: app_user_provider
       custom_authenticator: App\Security\Authenticator
       logout:
-        path: app_logout
+        path: app_home
+        target: /home
         # where to redirect after logout
         # target: app_any_route
 
@@ -35,6 +36,7 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/games, roles: ROLE_ADMIN }
     - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

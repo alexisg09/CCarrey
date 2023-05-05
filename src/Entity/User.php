@@ -36,6 +36,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\Column]
+    private int $winCount = 0;
+
+    #[ORM\Column]
+    private int $looseCount = 0;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -133,6 +139,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getWinCount(): ?int
+    {
+        return $this->winCount;
+    }
+
+    public function setWinCount(int $winCount): self
+    {
+        $this->winCount = $winCount;
+
+        return $this;
+    }
+
+    public function getLooseCount(): ?int
+    {
+        return $this->looseCount;
+    }
+
+    public function setLooseCount(int $looseCount): self
+    {
+        $this->looseCount = $looseCount;
 
         return $this;
     }
