@@ -12,19 +12,12 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $user =  $this->getUser();
-
-
-        if ($user) {
-            return $this->redirectToRoute('app_home');
-        }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'user' => $user]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
@@ -37,16 +30,27 @@ class SecurityController extends AbstractController
     #[Route(path: '/home', name: 'app_home')]
     public function home(AuthenticationUtils $authenticationUtils): Response
     {
-        $user = $this->getUser();
 
-        // get the login error if there is one
+        $user = $this->getUser();
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+
         if ($user) {
             return $this->render('base.html.twig', ['user' => $user]);
         } else {
-            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'user' => $user]);
+            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
         }
     }
+
+    // #[Route(path: '/', name: 'app_main')]
+    // public function main(): Response
+    // {
+
+    //     $user =  $this->getUser();
+
+    //     dump($user);
+
+
+    //     return $this->render('main.html.twig');
+    // }
 }

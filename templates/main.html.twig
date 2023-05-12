@@ -15,11 +15,7 @@
     </head>
     <body>
         {% block body %} 
-        {% if user %} 
-            <p>hello {{ user.username }}</p>
-        {% else %}
-        <p>hello</p>
-        {% endif %} 
+            <p>hello you are on main</p>
 
        <button><a href="/logout">LOGOUT</a></button>
         {% endblock %}
