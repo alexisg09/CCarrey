@@ -11,12 +11,15 @@
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+           
         {% endblock %}
     </head>
     <body>
         {% block body %} 
         {% if user %} 
             <p>hello {{ user.username }}</p>
+            <img src={{user.pictureUrl}} alt="pp" style="height: 60px;width: 60px; border-radius: 100%; object-fit: cover"/>
+            <p> Ratio victoire/défaite : <span style="font-weight: bold; font-size: 40px">{{user.winCount}}/{{user.looseCount}}</span></p>
         {% else %}
         <p>hello</p>
         {% endif %} 

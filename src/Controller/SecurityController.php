@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,15 +43,20 @@ class SecurityController extends AbstractController
         }
     }
 
-    // #[Route(path: '/', name: 'app_main')]
-    // public function main(): Response
-    // {
+    #[Route(path: '/', name: 'app_root')]
+    public function main(AuthenticationUtils $authenticationUtils, GameRepository $gameRepository): Response
+    {
+        $user = $this->getUser();
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+        $games = $gameRepository->findUserGamesPending($user->getUserIdentifier());
 
-    //     $user =  $this->getUser();
+        dump($games);
 
-    //     dump($user);
-
-
-    //     return $this->render('main.html.twig');
-    // }
+        if ($user) {
+            return $this->render('root.html.twig', ['user' => $user, 'games' => $games]);
+        } else {
+            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        }
+    }
 }

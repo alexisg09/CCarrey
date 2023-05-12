@@ -39,28 +39,26 @@ class TileRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Tile[] Returns an array of Tile objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Tile[] Returns an array of Tile objects
+     */
+    public function findByGameId($value): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.gameId = :val')
+            ->setParameter('val', $value)
+            ->orderBy('t.id', 'ASC')
+            ->setMaxResults(130)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Tile
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneByOwnerId($value): ?Tile
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.ownerId = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

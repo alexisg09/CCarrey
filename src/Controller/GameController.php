@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,10 +68,10 @@ class GameController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_game_delete', methods: ['POST'])]
-    public function delete(Request $request, Game $game, GameRepository $gameRepository): Response
+    public function delete(Request $request, Game $game, GameRepository $gameRepository, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$game->getId(), $request->request->get('_token'))) {
-            $gameRepository->remove($game, true);
+        if ($this->isCsrfTokenValid('delete' . $game->getId(), $request->request->get('_token'))) {
+            $gameRepository->surrender($game, $userRepository, $game->getPlayer1Id(), $game->getPlayer2Id(), $this->getUser()->getUserIdentifier(), true);
         }
 
         return $this->redirectToRoute('app_game_index', [], Response::HTTP_SEE_OTHER);

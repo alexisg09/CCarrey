@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
@@ -27,6 +29,17 @@ class Game
 
     #[ORM\Column(nullable: true)]
     private ?int $winnerId = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
+    #[ORM\OneToMany(mappedBy: 'Game', targetEntity: Tile::class, orphanRemoval: true)]
+    private Collection $Tiles;
+
+    public function __construct()
+    {
+        $this->Tiles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +102,48 @@ class Game
     public function setWinnerId(?int $winnerId): self
     {
         $this->winnerId = $winnerId;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tile>
+     */
+    public function getTiles(): Collection
+    {
+        return $this->Tiles;
+    }
+
+    public function addTile(Tile $tile): self
+    {
+        if (!$this->Tiles->contains($tile)) {
+            $this->Tiles->add($tile);
+            $tile->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTile(Tile $tile): self
+    {
+        if ($this->Tiles->removeElement($tile)) {
+            // set the owning side to null (unless already changed)
+            if ($tile->getGame() === $this) {
+                $tile->setGame(null);
+            }
+        }
 
         return $this;
     }

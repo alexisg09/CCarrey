@@ -12,11 +12,8 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('createdAt')
-            ->add('finishedAt')
             ->add('Player1Id')
-            ->add('Player2Id')
-        ;
+            ->add('Player2Id');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
