@@ -38,14 +38,13 @@
 			background-color: deeppink; /* Couleur de fond des cellules sélectionnées */
 		}
 
-		.hex-cell.playerone {
+		.playerone::before {
 			background-color: red;
 		}
 
-		.hex-cell.playertwo {
+		.playertwo::before {
 			background-color: blue;
 		}
-
 
 		.game {
 			border-bottom: 10px dashed #fc8888;
@@ -55,6 +54,10 @@
 
 			border-right: 10px dashed #88d7fc;
 
+		}
+
+		.colored::before {
+			background-color: greenyellow !important;
 		}
 	</style>
 
@@ -76,11 +79,24 @@
 		<div class="game hex-grid">
 			{% for row in 0..11 %}
 				{% for col in 0..11 %}
+					{% set filteredTiles = tiles|filter(tile => tile.positionX == row and tile.positionY == col) %}
+					{% if filteredTiles|length > 0 %}
+						{% set tile = filteredTiles|first %}
+						{% if tile.ownerId == game.Player1Id %}
+							<a class="hex-cell playerone"></a>
+						{% else %}
+							<a class="hex-cell playertwo"></a>
+						{% endif %}
+					{% else %}
+						<a class="hex-cell" href="{{ path('app_add_tile', {'id' : game.id, 'x': row, 'y': col, 'user_id': 21}) }}"></a>
+					{% endif %}
 
-					<a class="hex-cell" href="{{ path('app_add_tile', {'id' : game.id, 'x': row, 'y': col, 'user_id': 21}) }}"></a>
 				{% endfor %}
 			{% endfor %}
 		</div>
+		<a href="{{path('app_game_serialized', {'id': game.id, 'extension': 'xml'})}}">XML</a>
+		<a href="{{path('app_game_serialized', {'id': game.id, 'extension': 'xml'})}}">JSON</a>
+
 	</div>
 
 

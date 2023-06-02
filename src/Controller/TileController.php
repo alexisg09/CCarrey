@@ -7,6 +7,7 @@ use App\Entity\Tile;
 use App\Entity\User;
 use App\Repository\GameRepository;
 use App\Repository\TileRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class TileController extends AbstractController
 
     #[ParamConverter('user', options: ['mapping' => ['user_id' => 'id']])]
     #[Route('/addTile/{id}/x{x}-y{y}/{user_id}', name: 'app_add_tile', methods: ['GET', 'POST'])]
-    public function new(Request $request, Game $game, User $user, int $x, int $y,  TileRepository $tileRepository): Response
+    public function new(Request $request, Game $game, User $user, int $x, int $y,  TileRepository $tileRepository, LoggerInterface $logger): Response
     {
         $tile = new Tile();
         $tile->setGame($game);
@@ -37,5 +38,6 @@ class TileController extends AbstractController
         $tileRepository->save($tile, true);
 
         return $this->redirectToRoute('app_game_show', ['id' => $game->getId()]);
+        $logger->info('Tuile ajoutée');
     }
 }
