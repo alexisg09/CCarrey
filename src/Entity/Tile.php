@@ -29,6 +29,10 @@ class Tile
     #[ORM\JoinColumn(nullable: false)]
     private ?Game $Game = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tiles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $Owner = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +94,18 @@ class Tile
     public function setGame(?Game $Game): self
     {
         $this->Game = $Game;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->Owner;
+    }
+
+    public function setOwner(?User $Owner): self
+    {
+        $this->Owner = $Owner;
 
         return $this;
     }

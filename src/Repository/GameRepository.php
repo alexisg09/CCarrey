@@ -36,8 +36,6 @@ class GameRepository extends ServiceEntityRepository
 
     public function surrender(Game $entity,  UserRepository $userRepository, string $player1Id, string $player2Id, string $cowardId, bool $flush = false): void
     {
-
-
         $user1 = $userRepository->findById($player1Id);
         $user2 = $userRepository->findById($player2Id);
 

@@ -1,20 +1,88 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Game{% endblock %}
+{% block title %}Game
+{% endblock %}
 
 {% block body %}
-    <h1>Hex</h1>
-    <table class="table">
-        <tbody>
-<tr> <th>Partie n°</th>
-                <td>{{ game.id }}</td></tr>
-<tr>
-                <th>Partie commencée le :</th>
-                <td>{{ game.createdAt ? game.createdAt|date('d-m-Y H:i') : '' }}</td></tr>
-                  </tbody>
-    </table>
-          
-      
+	<style>
+		.hex-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Réglage de la taille des colonnes */
+			grid-auto-rows: 86.602540378443864px; /* Calcul de la hauteur des rangées hexagonales */
+			gap: 3px; /* Espacement entre les cellules */
+			width: 845px; /* La grille occupe toute la largeur disponible */
+			aspect-ratio: 1; /* Ratio d'aspect de 1:1 pour conserver les mêmes dimensions */
+		}
 
-    {{ include('game/_delete_form.html.twig') }}
+		.hex-cell {
+			position: relative;
+		}
+
+		.hex-cell::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 111%;
+			height: 100%;
+			clip-path: polygon(50% 0%, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
+			background-color: #8f8f8f;
+			border: 5px solid deeppink;
+		}
+
+		.hex-cell.selected {
+			background-color: #ff0000; /* Couleur de fond des cellules sélectionnées */
+		}
+
+		.hex-cell:hover::before {
+			background-color: deeppink; /* Couleur de fond des cellules sélectionnées */
+		}
+
+		.hex-cell.playerone {
+			background-color: red;
+		}
+
+		.hex-cell.playertwo {
+			background-color: blue;
+		}
+
+
+		.game {
+			border-bottom: 10px dashed #fc8888;
+			border-top: 10px dashed #fc8888;
+
+			border-left: 10px dashed #88d7fc;
+
+			border-right: 10px dashed #88d7fc;
+
+		}
+	</style>
+
+
+	<div>
+		<h1>Hex</h1>
+		<table class="table">
+			<tbody>
+				<tr>
+					<th class="">Partie n°</th>
+					<td>{{ game.id }}</td>
+				</tr>
+				<tr>
+					<th>Partie commencée le :</th>
+					<td>{{ game.createdAt ? game.createdAt|date('d-m-Y H:i') : '' }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="game hex-grid">
+			{% for row in 0..11 %}
+				{% for col in 0..11 %}
+
+					<a class="hex-cell" href="{{ path('app_add_tile', {'id' : game.id, 'x': row, 'y': col, 'user_id': 21}) }}"></a>
+				{% endfor %}
+			{% endfor %}
+		</div>
+	</div>
+
+
+	{{ include('game/_delete_form.html.twig') }}
 {% endblock %}
